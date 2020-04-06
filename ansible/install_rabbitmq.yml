@@ -1,0 +1,120 @@
+- hosts: localhost
+
+  tasks:
+    - name: installs chrony
+      apt:
+        name: chrony
+        state: present
+
+    - name: updates /etc/hosts with address rabbitmq-1
+      lineinfile:
+        path: /etc/hosts
+        line: 192.168.222.10 rabbitmq-1
+        create: yes
+
+    - name: updates /etc/hosts with address rabbitmq-2
+      lineinfile:
+        path: /etc/hosts
+        line: 192.168.222.20 rabbitmq-2
+        create: yes
+
+    - name: updates /etc/hosts with address rabbitmq-3
+      lineinfile:
+        path: /etc/hosts
+        line: 192.168.222.30 rabbitmq-3
+        create: yes
+
+    - name: ensures directory exists
+      file:
+        path: /var/lib/rabbitmq
+        state: directory
+
+    - name: creates erlang cookie
+      template:
+        src: templates/erlang_cookie.j2
+        dest: /var/lib/rabbitmq/.erlang.cookie
+        mode: 0400
+
+    - name: adds rabbitmq apt key
+      apt_key:
+        url: https://github.com/rabbitmq/signing-keys/releases/download/2.0/rabbitmq-release-signing-key.asc
+        state: present
+
+    - name: adds rabbitmq erlang repository
+      apt_repository:
+        repo: deb http://dl.bintray.com/rabbitmq/debian bionic erlang
+        state: present
+
+    - name: pins erlang repository
+      copy:
+        src: files/erlang_apt_preferences.txt
+        dest: /etc/apt/preferences.d/erlang
+
+    - name: adds rabbitmq repository
+      apt_repository:
+        repo: deb https://dl.bintray.com/rabbitmq/debian bionic main
+        state: present
+
+    - name: ensures directory exists
+      file:
+        path: /etc/rabbitmq
+        state: directory
+
+    - name: enables rabbitmq plugins
+      copy:
+        src: files/rabbitmq_plugins.txt
+        dest: /etc/rabbitmq/enabled_plugins
+
+    - name: creates rabbitmq config
+      template:
+        src: templates/rabbitmq_conf.j2
+        dest: /etc/rabbitmq/rabbitmq.conf
+
+    - name: creates rabbitmq env config
+      copy:
+        src: files/rabbitmq_env_conf.txt
+        dest: /etc/rabbitmq/rabbitmq-env.conf
+
+    - name: ensures directory exists
+      file:
+        path: /etc/systemd/system/rabbitmq-server.service.d
+        state: directory
+
+    - name: sets limits for rabbitmq
+      copy:
+        src: files/limits_conf.txt
+        dest: /etc/systemd/system/rabbitmq-server.service.d/limits.conf
+
+    - name: forces system to reread configs
+      systemd:
+        daemon_reload: yes
+
+    - name: apt-get update
+      apt:
+        update_cache: yes
+
+    - name: installs erlang
+      apt:
+        name: erlang
+        state: present
+
+    - name: installs rabbitmq server
+      apt:
+        name: rabbitmq-server
+        state: present
+
+    - name: creates temporary admin user
+      rabbitmq_user:
+        user: "{{ rmq_admin_user | default('tempadmin') }}"
+        password: "{{ rmq_admin_pwd | default('1qaz2wsx') }}"
+        tags: administrator
+        vhost: /
+        configure_priv: .*
+        read_priv: .*
+        write_priv: .*
+        state: present
+
+    - name: removes guest user
+      rabbitmq_user:
+        user: guest
+        state: absent

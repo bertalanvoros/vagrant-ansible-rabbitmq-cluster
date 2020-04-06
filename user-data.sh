@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+export DEBIAN_FRONTEND=noninteractive
+apt-get update -y
+# apt-get upgrade -y
+apt-get install -y apt-transport-https ca-certificates curl software-properties-common python-simplejson python-pip chrony ansible
+echo 'localhost ansible_connection=local ansible_python_interpreter="/usr/bin/env python"' | tee /etc/ansible/hosts
+pip install glances
+echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC8h+GISPrZqio1JGUAcgUuBBwNfXNTdp+a9Zo1gFzu9IZ/zNl2mE71v8RzAcE8zOJK8hpUoDgl5EVoQRx/StbH+65SRO8Mq5e+kgh/MCUVlcE95KTj8GEUDys1d3LBDN52QtOUghadsWT6RWaJKDp0Qy+sl9no1+M6qC/pv8hKP+sinHVHOJqEl0gMD5yOfPwyVoUSrY3SQlg88B49aiMd4qVln/xPdqAryDR0sNTQBmgCGxCMo9jjzvvMGeji/gpwYoFrrr3MGkvVZmV3JWxhRYG00mnKenGqm4U54JirFnlPRw88x8lzUAVlztMjNEeHu8gG2Egj4sNerBfXpg4r0QK/ejsJntRQ4oSg2HJkf5MH1TpdffxLJ0Ug+3mXtx3dlLgjLsmpZ5SVSzyUyKvqotjym0laqTxpomO7HdsIOIMABdeuwsIsQfaFxn6e+Y1JB05xk08wZk3Lmmnu8zGurfQKCwMyTdRfO7s3MfkxpidVwgWEWNCrbW0/kAeocwSmvWDFwW/xOHAsE2Yf4AJQxPx/5a5nUKEA9boe5sTSBUBgSljagpsJlJ2lZgbq7D9O4yvzeVjeXesxbvBoNlvPE9DjVH/jvJpgFb3PXMsesrG9asHggfHagXYKgqd8f3JoIGLRvx8p0vd6uANh6XuVqfroo8QTkgMiOUe1Jd3N4Q== probook' | tee -a /home/vagrant/.ssh/authorized_keys
