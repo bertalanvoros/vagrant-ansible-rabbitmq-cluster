@@ -24,5 +24,5 @@
 ## How to destroy the entire cluster.
 
 1. Issue 'vagrant destroy -f' This will shut down and delete all three VMs.  
-   You should export the RrabbitMQ configuration before doing this to ease rebuilding.
+   You should export the RrabbitMQ configuration before doing this to ease rebuilding.  
    Once destroyed, vagrant up will build a clean one with no configuration using the tempadmin account.
