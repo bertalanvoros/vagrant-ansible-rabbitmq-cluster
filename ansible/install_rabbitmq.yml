@@ -42,7 +42,7 @@
 
     - name: adds rabbitmq erlang repository
       apt_repository:
-        repo: deb http://dl.bintray.com/rabbitmq/debian bionic erlang
+        repo: deb http://dl.bintray.com/rabbitmq-erlang/debian bionic erlang-21.x
         state: present
 
     - name: pins erlang repository
@@ -93,9 +93,26 @@
       apt:
         update_cache: yes
 
-    - name: installs erlang
+    - name: installs all erlang packages
       apt:
-        name: erlang
+        pkg:
+          - erlang-base
+          - erlang-asn1
+          - erlang-crypto
+          - erlang-eldap
+          - erlang-ftp
+          - erlang-inets
+          - erlang-mnesia
+          - erlang-os-mon
+          - erlang-parsetools
+          - erlang-public-key
+          - erlang-runtime-tools
+          - erlang-snmp
+          - erlang-ssl
+          - erlang-syntax-tools
+          - erlang-tftp
+          - erlang-tools
+          - erlang-xmerl
         state: present
 
     - name: installs rabbitmq server
