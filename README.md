@@ -4,8 +4,9 @@
 
 1. Vagrant
 2. Virtualbox
-3. Virtualbox Ethernet interface #2 configured to be on the 192.168.222.0/24 network.
-4. ![Example](images/vmboxnic2.png)
+3. Virtualbox Ethernet interface #2 configured to be on the 192.168.222.0/24 network.  
+   This is your second Virtualbox Network adapter, it will have no ip config initially.
+   ![Example](images/vmboxnic2.png)
 
 ## How to build the RabbitMQ cluster
 
