@@ -17,13 +17,13 @@
 5. Log in using the tempadmin credentials.
 6. Create an admin user for yourself then delete tempadmin.
 
-## How to turn off the cluster at the end of the day.
+## How to turn off the cluster at the end of the day
 
 1. Option one: 'vagrant suspend', this will hibernate all three VMs.
 2. Option two: 'vagrant halt', this will shut down the VMs, state saved.
 3. Start existing cluster: vagrant up
 
-## How to destroy the entire cluster.
+## How to destroy the entire cluster
 
 1. Issue 'vagrant destroy -f' This will shut down and delete all three VMs.  
    You should export the RrabbitMQ configuration before doing this to ease rebuilding.  
